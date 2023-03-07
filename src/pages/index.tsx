@@ -6,7 +6,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery();
+  const hello = trpc.example.transcription.useQuery();
+
   // const hello2 = trpc.example.hi.useQuery();
   return (
     <>
@@ -46,11 +47,11 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+              {hello.data ? hello.data?.summary : "Loading tRPC query..."}
             </p>
-            {/* <p className="text-2xl text-white">
-              {hello2.data ? hello2.data.greeting : "Loading tRPC query..."}
-            </p> */}
+            <p className="text-2xl text-white">
+              {hello.data ? hello.data?.transcription : "Loading tRPC query..."}
+            </p>
             <AuthShowcase />
           </div>
         </div>
