@@ -9,7 +9,8 @@ import { useState } from "react";
 const Home: NextPage = () => {
   const hello = trpc.example.transcription.useQuery();
   const test = trpc.example.testfile.useMutation();
-  const presignedUrl = trpc.example.getPreSignedUrl.useQuery();
+  const presignedUrl = trpc.aws.getPreSignedUrl.useQuery();
+  const addDB = trpc.aws.logURL.useMutation();
   // const hello2 = trpc.example.hi.useQuery();
   const [file, setfile] = useState(null);
 
@@ -17,9 +18,14 @@ const Home: NextPage = () => {
     setfile(e.target.files[0]);
   };
 
-  const signIn = () => {
+  const signIn = async () => {
     console.log(file);
-    axios.put(presignedUrl.data.url, file);
+    const response = await axios.put(presignedUrl.data.url, file);
+    console.log(response);
+
+    const response2 = addDB.mutate(presignedUrl.data?.Key);
+
+    console.log(response2);
   };
 
   return (
@@ -76,7 +82,9 @@ const Home: NextPage = () => {
               <button
                 className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
                 onClick={signIn}
-              ></button>
+              >
+                Send File
+              </button>
             </div>
           </div>
         </div>

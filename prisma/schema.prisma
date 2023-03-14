@@ -20,6 +20,13 @@ model Example {
   updatedAt DateTime @updatedAt
 }
 
+model Transcription {
+  id            String  @id @default(cuid())
+  key           String  @unique
+  Transcription String?
+  Summary       String?
+}
+
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
