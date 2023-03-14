@@ -4,10 +4,10 @@ import { router, publicProcedure } from "../trpc";
 import { OpenAIApi, Configuration } from "openai";
 import * as fs from "fs";
 
-// const configuration = new Configuration({
-//   apiKey: env.OPEN_AI_API_KEY,
-// });
-// const openai = new OpenAIApi(configuration);
+const configuration = new Configuration({
+  apiKey: env.OPEN_AI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 // //get audio file
 
@@ -27,7 +27,7 @@ import * as fs from "fs";
 //     {
 //       role: "user",
 //       content: "Summarise this text for me please: \n" + transcription,
-//     },
+//     },i
 //   ],
 // });
 // const summary = raw_summary.data.choices[0]?.message;
@@ -41,5 +41,19 @@ export const exampleRouter = router({
       transcription: "asdasdasd",
       summary: "asdasdasdasdasdasdasd",
     };
+  }),
+  testfile: publicProcedure.mutation(async (file) => {
+    console.log("asdasdasd");
+    console.log(file);
+
+    // const raw_transcription = await openai.createTranscription(
+    //   file,
+    //   "whisper-1"
+    // );
+
+    // const transcription = raw_transcription.data.text;
+    // console.log(transcription);
+    // return transcription;
+    return "asdasdasd";
   }),
 });
