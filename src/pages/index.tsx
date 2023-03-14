@@ -2,14 +2,14 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
+import axios from "axios";
 import { trpc } from "../utils/trpc";
 import { useState } from "react";
 
 const Home: NextPage = () => {
   const hello = trpc.example.transcription.useQuery();
   const test = trpc.example.testfile.useMutation();
-
+  const presignedUrl = trpc.example.getPreSignedUrl.useQuery();
   // const hello2 = trpc.example.hi.useQuery();
   const [file, setfile] = useState(null);
 
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 
   const signIn = () => {
     console.log(file);
-    test.mutate(file);
+    axios.put(presignedUrl.data.url, file);
   };
 
   return (
@@ -36,6 +36,9 @@ const Home: NextPage = () => {
           </h1>
           {JSON.stringify(file)}
           <h1 className="text-white">{test.data}</h1>
+          <h1 className="text-white">
+            {presignedUrl.data ? presignedUrl.data.url : "AWAITING"}
+          </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
               className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"

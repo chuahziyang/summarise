@@ -3,6 +3,16 @@ import { env } from "../../../env/server.mjs";
 import { router, publicProcedure } from "../trpc";
 import { OpenAIApi, Configuration } from "openai";
 import * as fs from "fs";
+import S3 from "aws-sdk/clients/s3";
+import { randomUUID } from "crypto";
+
+const s3 = new S3({
+  apiVersion: "2006-03-01",
+  accessKeyId: env.AWS_ACCESS_KEY,
+  secretAccessKey: env.AWS_SECRET_KEY,
+  region: env.AWS_REGION,
+  signatureVersion: "v4",
+});
 
 const configuration = new Configuration({
   apiKey: env.OPEN_AI_API_KEY,
@@ -55,5 +65,21 @@ export const exampleRouter = router({
     // console.log(transcription);
     // return transcription;
     return "asdasdasd";
+  }),
+  getPreSignedUrl: publicProcedure.query(() => {
+    const ext = "mp3";
+
+    const Key = `${randomUUID()}.${ext}`;
+
+    const s3Params = {
+      Bucket: env.AWS_BUCKET_NAME,
+      Key,
+      Expires: 60,
+      ContentType: "audio/mp3",
+    };
+
+    const url = s3.getSignedUrl("putObject", s3Params);
+
+    return { url };
   }),
 });
