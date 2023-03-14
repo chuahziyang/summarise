@@ -30,9 +30,9 @@ export const awsRouter = router({
 
     return { url, Key };
   }),
-  logURL: publicProcedure.input(z.string()).mutation(async (input) => {
+  logURL: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
     console.log("asdasd");
-    const keys = await prisma.transcription.create({
+    const keys = await ctx.prisma.transcription.create({
       data: {
         key: input,
       },
