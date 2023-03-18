@@ -7,13 +7,17 @@ import { trpc } from "../utils/trpc";
 import { useState } from "react";
 
 const Home: NextPage = () => {
-  const presignedUrl = trpc.aws.getPreSignedUrl.useQuery();
+  const presignedUrl = trpc.aws.getPreSignedUrl.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const logURL = trpc.aws.logURL.useMutation();
   const test = trpc.openai.test.useQuery();
   // const hello2 = trpc.example.hi.useQuery();
   const [file, setfile] = useState(null);
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    setfile(e.target.files[0]);
+  };
 
   const signIn = async () => {
     const key =
@@ -49,7 +53,6 @@ const Home: NextPage = () => {
           <h1 className="text-white">
             {presignedUrl.data ? presignedUrl.data.url : "AWAITING"}
           </h1>
-          {test.data ?? test.data}
           <div className="flex flex-col items-center gap-2">
             <input type="file" onChange={(e) => handleChange(e)} />
 
