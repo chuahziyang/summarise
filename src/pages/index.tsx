@@ -26,7 +26,8 @@ const Home: NextPage = () => {
 
     console.log(key);
 
-    // console.log(file);
+    console.log(file);
+
     // const response = await axios.put(presignedUrl.data.url, file);
     // console.log(response);
 

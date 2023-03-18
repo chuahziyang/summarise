@@ -42,7 +42,7 @@ const openai = new OpenAIApi(configuration);
 // });
 // const summary = raw_summary.data.choices[0]?.message;
 
-export const exampleRouter = router({
+export const openaiRouter = router({
   // hello: publicProcedure.query(summary.data.choices[0].text),
   transcription: publicProcedure.query(() => {
     return {
