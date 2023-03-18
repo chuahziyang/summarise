@@ -11,9 +11,9 @@ const Home: NextPage = () => {
     staleTime: Infinity,
   });
   const logURL = trpc.aws.logURL.useMutation();
-  const testTranscription = trpc.openai.test.useQuery(undefined, {
-    staleTime: Infinity,
-  });
+  // const testTranscription = trpc.openai.test.useQuery(undefined, {
+  //   staleTime: Infinity,
+  // });
   const [file, setfile] = useState(null);
 
   const handleChange = (e) => {
