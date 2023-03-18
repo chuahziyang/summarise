@@ -5,6 +5,7 @@ import { OpenAIApi, Configuration } from "openai";
 import * as fs from "fs";
 import S3 from "aws-sdk/clients/s3";
 import { randomUUID } from "crypto";
+import { pipeline } from "stream/promises";
 
 const s3 = new S3({
   apiVersion: "2006-03-01",
@@ -53,35 +54,29 @@ export const openaiRouter = router({
     };
   }),
   test: publicProcedure.query(async () => {
-    console.log("asda");
+    const obj = s3.getObject({
+      Bucket: "22parent-signed",
+      Key: "Three Minute Thesis (3MT) 2011 Winner - Matthew Thompson.mp3",
+    });
+
+    await pipeline(
+      obj.createReadStream(),
+      fs.createWriteStream("src/server/audio/test2.mp3")
+    );
+
+    const upfile = fs.createReadStream("src/server/audio/test2.mp3");
+
+    const raw_transcription = await openai
+      .createTranscription(upfile, "whisper-1")
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log(raw_transcription);
+    const transcription = raw_transcription.data.text;
+
+    console.log(transcription);
+
+    return transcription;
   }),
-  //   const obj = s3.getObject({
-  //     Bucket: "22parent-signed",
-  //     Key: "Three Minute Thesis (3MT) 2011 Winner - Matthew Thompson.mp3",
-  //   });
-
-  //   const file = fs.createWriteStream("src/server/audio/test2.mp3");
-
-  //   obj
-  //     .createReadStream()
-  //     .pipe(file)
-  //     .on("finish", async () => {
-  //       console.log("done");
-
-  //       const upfile = fs.createReadStream("src/server/audio/test2.mp3");
-
-  //       const raw_transcription = await openai
-  //         .createTranscription(upfile, "whisper-1")
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-
-  //       console.log(raw_transcription);
-  //       const transcription = raw_transcription.data.text;
-
-  //       console.log(transcription);
-
-  //       return transcription;
-  //     });
-  // }),
 });

@@ -11,8 +11,9 @@ const Home: NextPage = () => {
     staleTime: Infinity,
   });
   const logURL = trpc.aws.logURL.useMutation();
-  const test = trpc.openai.test.useQuery();
-  // const hello2 = trpc.example.hi.useQuery();
+  const testTranscription = trpc.openai.test.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const [file, setfile] = useState(null);
 
   const handleChange = (e) => {
@@ -53,6 +54,7 @@ const Home: NextPage = () => {
           <h1 className="text-white">
             {presignedUrl.data ? presignedUrl.data.url : "AWAITING"}
           </h1>
+          <h1 className="text-white">{testTranscription.data}</h1>
           <div className="flex flex-col items-center gap-2">
             <input type="file" onChange={(e) => handleChange(e)} />
 
