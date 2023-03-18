@@ -52,4 +52,27 @@ export const openaiRouter = router({
       summary: "asdasdasdasdasdasdasd",
     };
   }),
+  test: publicProcedure.query(async () => {
+    const obj = s3.getObject({
+      Bucket: "22parent-signed",
+      Key: "Three Minute Thesis (3MT) 2011 Winner - Matthew Thompson.mp3",
+    });
+
+    const file = obj.createReadStream();
+
+    console.log(file);
+
+    const raw_transcription = await openai
+      .createTranscription(file, "whisper-1")
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log(raw_transcription);
+    const transcription = raw_transcription.data.text;
+
+    console.log(transcription);
+
+    return transcription;
+  }),
 });
