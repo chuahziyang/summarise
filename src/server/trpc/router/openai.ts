@@ -53,6 +53,32 @@ export const openaiRouter = router({
       summary: "asdasdasdasdasdasdasd",
     };
   }),
+  transcribe: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+    const obj = s3.getObject({
+      Bucket: "22parent-signed",
+      Key: input,
+    });
+
+    await pipeline(
+      obj.createReadStream(),
+      fs.createWriteStream("src/server/audio/test2.mp3")
+    );
+
+    const upfile = fs.createReadStream("src/server/audio/test2.mp3");
+
+    const raw_transcription = await openai
+      .createTranscription(upfile, "whisper-1")
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log(raw_transcription);
+    const transcription = raw_transcription.data.text;
+
+    console.log(transcription);
+
+    return transcription;
+  }),
   test: publicProcedure.query(async () => {
     const obj = s3.getObject({
       Bucket: "22parent-signed",

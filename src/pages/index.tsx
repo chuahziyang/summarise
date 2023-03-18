@@ -21,6 +21,10 @@ const Home: NextPage = () => {
   };
 
   const signIn = async () => {
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
     const key =
       presignedUrl.data?.Key ||
       ((() => {
@@ -51,12 +55,14 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
-          <h1 className="text-white">
-            {presignedUrl.data ? presignedUrl.data.url : "AWAITING"}
-          </h1>
+
           {/* <h1 className="text-white">{testTranscription.data}</h1> */}
           <div className="flex flex-col items-center gap-2">
-            <input type="file" onChange={(e) => handleChange(e)} />
+            <input
+              className="text-white"
+              type="file"
+              onChange={(e) => handleChange(e)}
+            />
 
             {/* <p className="text-2xl text-white">
               {hello.data ? hello.data?.summary : "Loading tRPC query..."}
