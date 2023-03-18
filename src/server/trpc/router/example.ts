@@ -52,35 +52,4 @@ export const exampleRouter = router({
       summary: "asdasdasdasdasdasdasd",
     };
   }),
-  testfile: publicProcedure.mutation(async (file) => {
-    console.log("asdasdasd");
-    console.log(file);
-
-    // const raw_transcription = await openai.createTranscription(
-    //   file,
-    //   "whisper-1"
-    // );
-
-    // const transcription = raw_transcription.data.text;
-    // console.log(transcription);
-    // return transcription;
-    return "asdasdasd";
-  }),
-  getPreSignedUrl: publicProcedure.query(() => {
-    const ext = "mp3";
-
-    const Key = `${randomUUID()}.${ext}`;
-    i;
-
-    const s3Params = {
-      Bucket: env.AWS_BUCKET_NAME,
-      Key,
-      Expires: 60,
-      ContentType: "audio/mp3",
-    };
-
-    const url = s3.getSignedUrl("putObject", s3Params);
-
-    return { url };
-  }),
 });
