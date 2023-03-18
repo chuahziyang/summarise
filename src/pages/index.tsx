@@ -54,7 +54,7 @@ const Home: NextPage = () => {
           <h1 className="text-white">
             {presignedUrl.data ? presignedUrl.data.url : "AWAITING"}
           </h1>
-          <h1 className="text-white">{testTranscription.data}</h1>
+          {/* <h1 className="text-white">{testTranscription.data}</h1> */}
           <div className="flex flex-col items-center gap-2">
             <input type="file" onChange={(e) => handleChange(e)} />
 
