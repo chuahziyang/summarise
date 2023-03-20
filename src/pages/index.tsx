@@ -14,6 +14,7 @@ const Home: NextPage = () => {
   // const testTranscription = trpc.openai.test.useQuery(undefined, {
   //   staleTime: Infinity,
   // });
+  const transcription = trpc.openai.transcribe.useMutation();
   const [file, setfile] = useState(null);
 
   const handleChange = (e) => {
@@ -36,8 +37,10 @@ const Home: NextPage = () => {
 
     console.log(file);
 
-    // const response = await axios.put(presignedUrl.data.url, file);
-    // console.log(response);
+    const response = await axios.put(presignedUrl.data.url, file);
+    console.log(response);
+
+    transcription.mutate(key);
 
     // const response2 = await logURL.mutateAsync(presignedUrl.data?.Key);
     // console.log(response2);
@@ -57,6 +60,9 @@ const Home: NextPage = () => {
           </h1>
 
           {/* <h1 className="text-white">{testTranscription.data}</h1> */}
+          <h1 className="text-white">
+            {transcription.data ? transcription.data : "asdasd"}
+          </h1>
           <div className="flex flex-col items-center gap-2">
             <input
               className="text-white"

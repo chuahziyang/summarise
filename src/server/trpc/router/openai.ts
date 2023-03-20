@@ -54,6 +54,7 @@ export const openaiRouter = router({
     };
   }),
   transcribe: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+    console.log(input);
     const obj = s3.getObject({
       Bucket: "22parent-signed",
       Key: input,
@@ -82,7 +83,7 @@ export const openaiRouter = router({
   test: publicProcedure.query(async () => {
     const obj = s3.getObject({
       Bucket: "22parent-signed",
-      Key: "Three Minute Thesis (3MT) 2011 Winner - Matthew Thompson.mp3",
+      Key: "a81ba744-e94d-4e06-ac01-f86f5b25e7c3.mp3",
     });
 
     await pipeline(
